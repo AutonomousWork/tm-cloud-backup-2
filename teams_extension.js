@@ -8,24 +8,35 @@ export default {
     author: 'Autonomous Work',
 
     async onload() {
-        // Add CSS to hide the Teams menu item
-        const style = document.createElement('style');
-        style.textContent = `
-            /* Hide Teams icon in the navbar */
-            button[data-element-id="workspace-tab-teams"] {
-                display: none !important;
+        // Find and hide the Teams button
+        const hideTeams = () => {
+            const teamsButton = document.querySelector('button[data-element-id="workspace-tab-teams"]');
+            if (teamsButton) {
+                teamsButton.style.setProperty('display', 'none', 'important');
             }
-        `;
-        document.head.appendChild(style);
+        };
+
+        // Initial hide
+        hideTeams();
+
+        // Create observer to handle dynamically loaded content
+        this.observer = new MutationObserver(hideTeams);
+        this.observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
     },
 
     onunload() {
-        // Remove any added styles when extension is disabled
-        const styles = document.querySelectorAll('style');
-        styles.forEach(style => {
-            if (style.textContent.includes('workspace-tab-teams')) {
-                style.remove();
-            }
-        });
+        // Stop observing
+        if (this.observer) {
+            this.observer.disconnect();
+        }
+
+        // Show the Teams button again
+        const teamsButton = document.querySelector('button[data-element-id="workspace-tab-teams"]');
+        if (teamsButton) {
+            teamsButton.style.removeProperty('display');
+        }
     }
 }; 
