@@ -11,11 +11,13 @@ export default {
         // Add CSS to hide the Teams menu item
         const style = document.createElement('style');
         style.textContent = `
-      /* Hide Teams icon in the navbar */
-      [data-testid="nav-teams"] {
-        display: none !important;
-      }
-    `;
+            /* Hide Teams icon in the navbar */
+            div[role="navigation"] a[href="/teams"],
+            div[role="navigation"] a:has(img[alt="Teams"]),
+            div[role="navigation"] div:has(> a[href="/teams"]) {
+                display: none !important;
+            }
+        `;
         document.head.appendChild(style);
     },
 
@@ -23,7 +25,7 @@ export default {
         // Remove any added styles when extension is disabled
         const styles = document.querySelectorAll('style');
         styles.forEach(style => {
-            if (style.textContent.includes('nav-teams')) {
+            if (style.textContent.includes('Teams')) {
                 style.remove();
             }
         });
