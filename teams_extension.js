@@ -12,9 +12,7 @@ export default {
         const style = document.createElement('style');
         style.textContent = `
             /* Hide Teams icon in the navbar */
-            div[role="navigation"] a[href="/teams"],
-            div[role="navigation"] a:has(img[alt="Teams"]),
-            div[role="navigation"] div:has(> a[href="/teams"]) {
+            button[data-element-id="workspace-tab-teams"] {
                 display: none !important;
             }
         `;
@@ -25,7 +23,7 @@ export default {
         // Remove any added styles when extension is disabled
         const styles = document.querySelectorAll('style');
         styles.forEach(style => {
-            if (style.textContent.includes('Teams')) {
+            if (style.textContent.includes('workspace-tab-teams')) {
                 style.remove();
             }
         });
